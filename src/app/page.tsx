@@ -4,7 +4,9 @@ export default function Home() {
   return (
     <div>
       <h1>home</h1>
-      <Button style={{ padding: 10, margin: 10 }}>zzz</Button>
+      <Button style={{ margin: 10 }} variant="outline">
+        Zaloopa
+      </Button>
     </div>
   )
 }
