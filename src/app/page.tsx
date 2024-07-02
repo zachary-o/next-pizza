@@ -1,12 +1,11 @@
-import { Button } from "@/components/ui/button"
+import { Container, Title } from "@/components/shared"
 
 export default function Home() {
   return (
-    <div>
-      <h1>home</h1>
-      <Button style={{ margin: 10 }} variant="outline">
-        Zaloopa
-      </Button>
-    </div>
+    <>
+      <Container className="mt-10">
+        <Title className="font-extrabold" text="All pizzas" size="lg" />
+      </Container>
+    </>
   )
 }
