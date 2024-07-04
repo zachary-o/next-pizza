@@ -8,7 +8,7 @@ export default function Home() {
       </Container>
       <TopBar />
 
-      <Container className="pb-14">
+      <Container className="mt-10 pb-14">
         <div className="flex gap-[60px]">
           {/* FILTERS */}
           <div className="w-[250px]">
