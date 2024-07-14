@@ -1,13 +1,13 @@
-"use client"
+"use client";
 
-import React from "react"
-import { Title } from "./title"
-import { FilterCheckbox } from "./filter-checkbox"
-import { Input, RangeSlider } from "../ui"
-import { CheckboxFiltersGroup } from "./checkbox-filters-group"
+import React from "react";
+import { Title } from "./title";
+import { FilterCheckbox } from "./filter-checkbox";
+import { Input, RangeSlider } from "../ui";
+import { CheckboxFiltersGroup } from "./checkbox-filters-group";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
@@ -93,5 +93,5 @@ export const Filters: React.FC<Props> = ({ className }) => {
         ]}
       />
     </div>
-  )
-}
+  );
+};

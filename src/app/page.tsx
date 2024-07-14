@@ -4,9 +4,10 @@ import {
   ProductsGroupList,
   Title,
   TopBar,
-} from "@/components/shared"
+} from "@/components/shared";
 
 export default function Home() {
+
   return (
     <>
       <Container className="mt-10">
@@ -36,7 +37,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 2,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -44,7 +45,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 3,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -52,7 +53,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 4,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -60,7 +61,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 5,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -68,7 +69,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                 ]}
-                categoryId={0}
+                categoryId={1}
               />
               <ProductsGroupList
                 title="Snacks"
@@ -82,7 +83,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 2,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -90,7 +91,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 3,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -98,7 +99,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 4,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -106,7 +107,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                   {
-                    id: 1,
+                    id: 5,
                     name: "Cheesburger pizza",
                     imageUrl:
                       "https://cdn.papajohns.pl/images/catalog/thumbs/cart/545fb5ced52c3f2ae0cb39e551d6aeb0.webp",
@@ -114,7 +115,7 @@ export default function Home() {
                     items: [{ price: 15 }],
                   },
                 ]}
-                categoryId={0}
+                categoryId={3}
               />
             </div>
           </div>

@@ -1,44 +1,44 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { FilterCheckbox, FilterCheckboxProps } from "./filter-checkbox"
-import { Input } from "../ui"
+import React, { useState } from "react";
+import { FilterCheckbox, FilterCheckboxProps } from "./filter-checkbox";
+import { Input } from "../ui";
 
-type Item = FilterCheckboxProps
+type Item = FilterCheckboxProps;
 
 interface Props {
-  title: string
-  items: Item[]
-  defaultItems?: Item[]
-  limit?: number
-  searchInputPlaceholder?: string
-  onChange?: (values: string[]) => string
-  defaultValue?: string[]
-  className?: string
+  title: string;
+  items: Item[];
+  defaultItems: Item[];
+  limit?: number;
+  searchInputPlaceholder?: string;
+  onChange?: (values: string[]) => string;
+  defaultValue?: string[];
+  className?: string;
 }
 
 export const CheckboxFiltersGroup: React.FC<Props> = ({
   title,
   items,
   defaultItems,
-  limit,
+  limit = 5,
   searchInputPlaceholder = "Search...",
   onChange,
   defaultValue,
   className,
 }) => {
-  const [showAll, setShowAll] = useState(false)
-  const [searchValue, setSearchValue] = useState("")
+  const [showAll, setShowAll] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const visibleItems = showAll
     ? items.filter((item) =>
         item.text.toLowerCase().includes(searchValue.toLowerCase())
       )
-    : defaultItems?.slice(0, limit)
+    : defaultItems.slice(0, limit);
 
   const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value)
-  }
+    setSearchValue(event.target.value);
+  };
 
   return (
     <div className={className}>
@@ -55,7 +55,7 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
       )}
 
       <div className="flex flex-col gap-4 max-h-96 pr-2 overflow-auto scrollbar">
-        {visibleItems?.map((item, index) => (
+        {visibleItems.map((item, index) => (
           <FilterCheckbox
             key={index}
             text={item.text}
@@ -67,7 +67,7 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
         ))}
       </div>
 
-      {items.length > limit! && (
+      {items.length > limit && (
         <div className={showAll ? "border-t border-t-neutral-100 mt-4" : ""}>
           <button
             className="text-primary mt-3"
@@ -78,5 +78,5 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
