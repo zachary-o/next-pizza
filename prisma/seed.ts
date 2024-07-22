@@ -1,10 +1,27 @@
+import { hashSync } from "bcrypt"
 import { _ingredients, categories, products } from "./constants"
 import { prisma } from "./prisma-client"
-import { hashSync } from "bcrypt"
 
-const randomDecimal = (min: number, max: number) => {
+const randomNumber = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min) * 10 + min * 10) / 10
 }
+
+const generateProductItem = ({
+  productId,
+  pizzaType,
+  size,
+}: {
+  productId: number;
+  pizzaType?: 1 | 2;
+  size?: 20 | 30 | 40;
+}) => {
+  return {
+    productId,
+    price: randomNumber(10, 40),
+    pizzaType,
+    size,
+  }
+};
 
 // generate data
 async function up() {
@@ -28,59 +45,129 @@ async function up() {
   })
 
   await prisma.category.createMany({
-    data: categories 
+    data: categories,
   })
 
-  await prisma.ingridient.createMany({
-    data: _ingredients
+  await prisma.ingredient.createMany({
+    data: _ingredients,
   })
 
   await prisma.product.createMany({
-    data: products
+    data: products,
   })
 
   const pizza1 = await prisma.product.create({
     data: {
       name: "Pepperoni fresh",
-      imageUrl: "https://robbreport.com/wp-content/uploads/2024/06/opener-w-Bugatti-3.jpg?w=1024",
+      imageUrl:
+        "https://robbreport.com/wp-content/uploads/2024/06/opener-w-Bugatti-3.jpg?w=1024",
       categoryId: 1,
-      ingridients: {
-        connect: _ingredients.slice(0, 5)
-      }
-    }
+      ingredients: {
+        connect: _ingredients.slice(0, 5),
+      },
+    },
   })
   const pizza2 = await prisma.product.create({
     data: {
       name: "Cheese",
       imageUrl: "https://robbreport.com/wp-content/uploads/2023/08/1-2.jpg",
       categoryId: 1,
-      ingridients: {
-        connect: _ingredients.slice(5, 10)
-      }
-    }
+      ingredients: {
+        connect: _ingredients.slice(5, 10),
+      },
+    },
   })
   const pizza3 = await prisma.product.create({
     data: {
       name: "Corizo fresh",
-      imageUrl: "https://hips.hearstapps.com/hmg-prod/images/02-ss300p-3i4-front-1567703461.jpg",
+      imageUrl:
+        "https://hips.hearstapps.com/hmg-prod/images/02-ss300p-3i4-front-1567703461.jpg",
       categoryId: 1,
-      ingridients: {
-        connect: _ingredients.slice(10, 40)
-      }
-    }
+      ingredients: {
+        connect: _ingredients.slice(10, 40),
+      },
+    },
   })
 
   await prisma.productOption.createMany({
-    data: []
+    data: [
+        // Pizza "Pepperoni fresh"
+        generateProductItem({ productId: pizza1.id, pizzaType: 1, size: 20 }),
+        generateProductItem({ productId: pizza1.id, pizzaType: 2, size: 30 }),
+        generateProductItem({ productId: pizza1.id, pizzaType: 2, size: 40 }),
+  
+        // Pizza "Cheese"
+        generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 20 }),
+        generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 30 }),
+        generateProductItem({ productId: pizza2.id, pizzaType: 1, size: 40 }),
+        generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 20 }),
+        generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 30 }),
+        generateProductItem({ productId: pizza2.id, pizzaType: 2, size: 40 }),
+  
+        // Pizza "Corizo fresh"
+        generateProductItem({ productId: pizza3.id, pizzaType: 1, size: 20 }),
+        generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 30 }),
+        generateProductItem({ productId: pizza3.id, pizzaType: 2, size: 40 }),
+  
+        // Other items
+        generateProductItem({ productId: 1 }),
+        generateProductItem({ productId: 2 }),
+        generateProductItem({ productId: 3 }),
+        generateProductItem({ productId: 4 }),
+        generateProductItem({ productId: 5 }),
+        generateProductItem({ productId: 6 }),
+        generateProductItem({ productId: 7 }),
+        generateProductItem({ productId: 8 }),
+        generateProductItem({ productId: 9 }),
+        generateProductItem({ productId: 10 }),
+        generateProductItem({ productId: 11 }),
+        generateProductItem({ productId: 12 }),
+        generateProductItem({ productId: 13 }),
+        generateProductItem({ productId: 14 }),
+        generateProductItem({ productId: 15 }),
+        generateProductItem({ productId: 16 }),
+        generateProductItem({ productId: 17 }),
+    ],
+  })
+
+  await prisma.cart.createMany({
+    data: [
+      {
+        userId: 1,
+        totalAmount: 0,
+        token: "11111"
+      },
+      {
+        userId: 2,
+        totalAmount: 0,
+        token: "11rrrr111"
+      },
+    ]
+  })
+
+  await prisma.cartItem.create({
+    data: 
+      {
+        productOptionId: 1,
+        cartId: 1,
+        quantity: 2,
+        ingredients: {
+          connect: [{id: 1}, {id: 2}, {id: 3}, {id: 4}]
+        }
+      }
+    
   })
 }
 
 // erase data
 async function down() {
-    await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE`
-    await prisma.$executeRaw`TRUNCATE TABLE "Ingridient" RESTART IDENTITY CASCADE`
-    await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`
-    await prisma.$executeRaw`TRUNCATE TABLE "Product" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "Category" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "Ingredient" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "User" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "Product" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "ProductOption" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "Cart" RESTART IDENTITY CASCADE`
+  await prisma.$executeRaw`TRUNCATE TABLE "CartItem" RESTART IDENTITY CASCADE`
 }
 
 async function main() {
