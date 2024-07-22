@@ -1,21 +1,22 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
-import { Search } from "lucide-react"
-import React, { useRef, useState } from "react"
-import { useClickAway } from "react-use"
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import Link from "next/link";
+import React, { useRef, useState } from "react";
+import { useClickAway } from "react-use";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
 export const SearchInput: React.FC<Props> = ({ className }) => {
-  const [focused, setFocused] = useState(false)
-  const ref = useRef(null)
+  const [focused, setFocused] = useState(false);
+  const ref = useRef(null);
 
   useClickAway(ref, () => {
-    setFocused(false)
-  })
+    setFocused(false);
+  });
 
   return (
     <>
@@ -43,9 +44,19 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
             focused && "visible opacity-100 top-12"
           )}
         >
-            
+          <Link
+            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10"
+            href="/product/1"
+          >
+            <img
+              className="rounded-sm h-8 w-8"
+              src="https://hips.hearstapps.com/hmg-prod/images/02-ss300p-3i4-front-1567703461.jpg"
+              alt="Pizza"
+            />
+            <span>Zaloopa</span>
+          </Link>
         </div>
       </div>
     </>
-  )
-}
+  );
+};
