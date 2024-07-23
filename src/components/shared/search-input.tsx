@@ -1,22 +1,45 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import { Search } from "lucide-react";
-import Link from "next/link";
-import React, { useRef, useState } from "react";
-import { useClickAway } from "react-use";
+import { cn } from "@/lib/utils"
+import { Api } from "@/services/api-client"
+import { Product } from "@prisma/client"
+import { Search } from "lucide-react"
+import Link from "next/link"
+import React, { useEffect, useRef, useState } from "react"
+import { useClickAway, useDebounce } from "react-use"
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export const SearchInput: React.FC<Props> = ({ className }) => {
-  const [focused, setFocused] = useState(false);
-  const ref = useRef(null);
+  const [focused, setFocused] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
+  const [products, setProducts] = useState<Product[]>([])
+  const ref = useRef(null)
 
   useClickAway(ref, () => {
-    setFocused(false);
-  });
+    setFocused(false)
+  })
+
+  useDebounce(
+   async () => {
+      try {
+        const response = await Api.products.search(searchQuery)
+        setProducts(response)
+      } catch (error) {
+        console.log('error', error)
+      }
+    },
+    250,
+    [searchQuery]
+  )
+
+  const handleSelectProduct =() => {
+    setFocused(false)
+    setSearchQuery("")
+    setProducts([])
+  }
 
   return (
     <>
@@ -36,27 +59,33 @@ export const SearchInput: React.FC<Props> = ({ className }) => {
           type="text"
           placeholder="Search..."
           onFocus={() => setFocused(true)}
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
         />
 
-        <div
+        {products.length > 0 && <div
           className={cn(
             "absolute w-full bg-white rounded-xl py-2 top-14 shadow-md transition-all duration-200 invisible opacity-0 z-30",
             focused && "visible opacity-100 top-12"
           )}
         >
-          <Link
-            className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10"
-            href="/product/1"
-          >
-            <img
-              className="rounded-sm h-8 w-8"
-              src="https://hips.hearstapps.com/hmg-prod/images/02-ss300p-3i4-front-1567703461.jpg"
-              alt="Pizza"
-            />
-            <span>Zaloopa</span>
-          </Link>
-        </div>
+          {products.map((product) => (
+            <Link
+              key={product.id}
+              className="flex items-center gap-3 w-full px-3 py-2 hover:bg-primary/10"
+              href={`/product/${product.id}`}
+              onClick={handleSelectProduct}
+            >
+              <img
+                className="rounded-sm h-8 w-8"
+                src={product.imageUrl}
+                alt={product.name}
+              />
+              <span>{product.name}</span>
+            </Link>
+          ))}
+        </div>}
       </div>
     </>
-  );
-};
+  )
+}

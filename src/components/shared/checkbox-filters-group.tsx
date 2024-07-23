@@ -1,20 +1,21 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { FilterCheckbox, FilterCheckboxProps } from "./filter-checkbox";
-import { Input } from "../ui";
+import React, { useState } from "react"
+import { FilterCheckbox, FilterCheckboxProps } from "./filter-checkbox"
+import { Input, Skeleton } from "../ui"
 
-type Item = FilterCheckboxProps;
+type Item = FilterCheckboxProps
 
 interface Props {
-  title: string;
-  items: Item[];
-  defaultItems: Item[];
-  limit?: number;
-  searchInputPlaceholder?: string;
-  onChange?: (values: string[]) => string;
-  defaultValue?: string[];
-  className?: string;
+  title: string
+  items: Item[]
+  defaultItems: Item[]
+  limit?: number
+  loading: boolean
+  searchInputPlaceholder?: string
+  onChange?: (values: string[]) => string
+  defaultValue?: string[]
+  className?: string
 }
 
 export const CheckboxFiltersGroup: React.FC<Props> = ({
@@ -22,23 +23,40 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
   items,
   defaultItems,
   limit = 5,
+  loading,
   searchInputPlaceholder = "Search...",
   onChange,
   defaultValue,
   className,
 }) => {
-  const [showAll, setShowAll] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
+  const [showAll, setShowAll] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
+
+  const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.target.value)
+  }
+
+  if (loading) {
+    return (
+      <div>
+        <p className="font-bold mb-3">{title}</p>
+
+        {...Array(limit)
+          .fill(0)
+          .map((_, index) => (
+            <Skeleton key={index} className="h-6 mb-4 rounded-[8px]" />
+          ))}
+
+        <Skeleton className="w-28 h-6 mb-4 rounded-[8px]" />
+      </div>
+    )
+  }
 
   const visibleItems = showAll
     ? items.filter((item) =>
         item.text.toLowerCase().includes(searchValue.toLowerCase())
       )
-    : defaultItems.slice(0, limit);
-
-  const onChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(event.target.value);
-  };
+    : defaultItems.slice(0, limit)
 
   return (
     <div className={className}>
@@ -78,5 +96,5 @@ export const CheckboxFiltersGroup: React.FC<Props> = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}

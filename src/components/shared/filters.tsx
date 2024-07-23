@@ -1,16 +1,24 @@
-"use client";
+"use client"
 
-import React from "react";
-import { Title } from "./title";
-import { FilterCheckbox } from "./filter-checkbox";
-import { Input, RangeSlider } from "../ui";
-import { CheckboxFiltersGroup } from "./checkbox-filters-group";
+import React from "react"
+import { Title } from "./title"
+import { FilterCheckbox } from "./filter-checkbox"
+import { Input, RangeSlider } from "../ui"
+import { CheckboxFiltersGroup } from "./checkbox-filters-group"
+import { useFilterIngredients } from "@/hooks/useFilterIngredients"
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
+  const { ingredients, loading } = useFilterIngredients()
+
+  const items = ingredients.map((ingredient) => ({
+    text: ingredient.name,
+    value: String(ingredient.id),
+  }))
+
   return (
     <div className={className}>
       <Title text="Filters" size="sm" className="mb-5 font-bold" />
@@ -39,59 +47,10 @@ export const Filters: React.FC<Props> = ({ className }) => {
         className="mt-5"
         title="Ingridients"
         limit={6}
-        defaultItems={[
-          {
-            text: "Red onions",
-            value: "1",
-          },
-          {
-            text: "Cheese sauce",
-            value: "2",
-          },
-          {
-            text: "Garlic",
-            value: "3",
-          },
-          {
-            text: "Mozzarella",
-            value: "4",
-          },
-          {
-            text: "Gherkins",
-            value: "5",
-          },
-          {
-            text: "Tomatos",
-            value: "6",
-          },
-        ]}
-        items={[
-          {
-            text: "Red onions",
-            value: "1",
-          },
-          {
-            text: "Cheese sauce",
-            value: "2",
-          },
-          {
-            text: "Garlic",
-            value: "3",
-          },
-          {
-            text: "Mozzarella",
-            value: "4",
-          },
-          {
-            text: "Gherkins",
-            value: "5",
-          },
-          {
-            text: "Tomatos",
-            value: "6",
-          },
-        ]}
+        loading={loading}
+        defaultItems={items.slice(0, 6)}
+        items={items}
       />
     </div>
-  );
-};
+  )
+}
