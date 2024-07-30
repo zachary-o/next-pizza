@@ -1,31 +1,45 @@
-"use client"
+"use client";
 
-import React from "react"
-import { Title } from "./title"
-import { FilterCheckbox } from "./filter-checkbox"
-import { Input, RangeSlider } from "../ui"
-import { CheckboxFiltersGroup } from "./checkbox-filters-group"
-import { useFilterIngredients } from "@/hooks/useFilterIngredients"
+import { useFilterIngredients } from "@/hooks/useFilterIngredients";
+import React, { useState } from "react";
+import { Input, RangeSlider } from "../ui";
+import { CheckboxFiltersGroup } from "./checkbox-filters-group";
+import { FilterCheckbox } from "./filter-checkbox";
+import { Title } from "./title";
 
 interface Props {
-  className?: string
+  className?: string;
+}
+
+interface PriceRange {
+  priceFrom?: number;
+  priceTo?: number;
 }
 
 export const Filters: React.FC<Props> = ({ className }) => {
-  const { ingredients, loading } = useFilterIngredients()
+  const { ingredients, loading, selectedIds, handleAddId } =
+    useFilterIngredients();
+  const [price, setPrice] = useState<PriceRange>({
+    priceFrom: 0,
+    priceTo: 100,
+  });
 
   const items = ingredients.map((ingredient) => ({
     text: ingredient.name,
     value: String(ingredient.id),
-  }))
+  }));
 
   return (
     <div className={className}>
       <Title text="Filters" size="sm" className="mb-5 font-bold" />
 
       <div className="flex flex-col gap-4">
-        <FilterCheckbox text="Can be combined" value="1" />
-        <FilterCheckbox text="New" value="2" />
+        <FilterCheckbox
+          name="can_be_combined"
+          text="Can be combined"
+          value="1"
+        />
+        <FilterCheckbox name="new" text="New" value="2" />
       </div>
 
       <div className="mt-5 border-y border-y-neutral-100 py-6 pb-7">
@@ -36,9 +50,15 @@ export const Filters: React.FC<Props> = ({ className }) => {
             placeholder="0"
             min={0}
             max={100}
-            defaultValue={0}
+            value={String(price.priceFrom)}
           />
-          <Input type="number" min={10} max={100} placeholder="100" />
+          <Input
+            type="number"
+            min={10}
+            max={100}
+            placeholder="100"
+            value={String(price.priceTo)}
+          />
         </div>
 
         <RangeSlider min={0} max={100} step={5} value={[0, 100]} />
@@ -50,7 +70,10 @@ export const Filters: React.FC<Props> = ({ className }) => {
         loading={loading}
         defaultItems={items.slice(0, 6)}
         items={items}
+        onClickCheckbox={handleAddId}
+        selectedIds={selectedIds}
+        name="ingredients"
       />
     </div>
-  )
-}
+  );
+};
