@@ -1,28 +1,20 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { useSet } from "react-use"
+import { useFilters, useIngredients, useQueryFilters } from "@/hooks"
+import React from "react"
 import { Input, RangeSlider } from "../ui"
 import { CheckboxFiltersGroup } from "./checkbox-filters-group"
 import { Title } from "./title"
-import qs from "qs"
-import { useRouter, useSearchParams } from "next/navigation"
-import { useFilters, useIngredients, useQueryFilters } from "@/hooks"
-
 
 
 interface Props {
   className?: string
 }
 
-
-
 export const Filters: React.FC<Props> = ({ className }) => {
   const {ingredients, loading} = useIngredients()
   const filters = useFilters()
   useQueryFilters(filters)
-
-  
 
   const items = ingredients.map((ingredient) => ({
     text: ingredient.name,
@@ -33,7 +25,6 @@ export const Filters: React.FC<Props> = ({ className }) => {
     filters.handleUpdatePriceRange("priceFrom", prices[0])
     filters.handleUpdatePriceRange("priceTo", prices[1])
   }
-
 
   return (
     <div className={className}>

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { Title } from "./title";
 import { cn } from "@/lib/utils";
-import { ProductCard } from "./product-card";
+import React, { useEffect, useRef } from "react";
 import { useIntersection } from "react-use";
 import { useCategoryStore } from "../../../store/category";
+import { ProductCard } from "./product-card";
+import { Title } from "./title";
 
 interface Props {
   title: string;
@@ -45,7 +45,7 @@ export const ProductsGroupList: React.FC<Props> = ({
             id={product.id}
             name={product.name}
             imageUrl={product.imageUrl}
-            price={product.items[0].price}
+            price={product.price}
           />
         ))}
       </div>

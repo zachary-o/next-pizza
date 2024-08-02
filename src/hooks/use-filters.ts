@@ -58,10 +58,10 @@ export const useFilters = (): ReturnTypes => {
   })
 
   const handleUpdatePriceRange = (name: keyof PriceRange, value: number) => {
-    setPriceRange({
-      ...priceRange,
+    setPriceRange(prev => ({
+      ...prev,
       [name]: value,
-    })
+    }))
   }
 
   return {
