@@ -1,17 +1,19 @@
-import { cn } from "@/lib/utils"
-import React from "react"
+"use client";
+
+import { cn } from "@/lib/utils";
+import React from "react";
 
 type Variant = {
-  name: string
-  value: string
-  disabled?: boolean
-}
+  name: string;
+  value: string;
+  disabled?: boolean;
+};
 
 interface Props {
-  items: readonly Variant[]
-  onClick?: (value: Variant["value"]) => void
-  selectedValue?: Variant["value"]
-  className?: string
+  items: readonly Variant[];
+  onClick?: (value: Variant["value"]) => void;
+  selectedValue?: Variant["value"];
+  className?: string;
 }
 
 export const GroupVariants: React.FC<Props> = ({
@@ -38,8 +40,8 @@ export const GroupVariants: React.FC<Props> = ({
           )}
           key={item.name}
           onClick={() => onClick?.(item.value)}
-        ></button>
+        >{item.name}</button>
       ))}
     </div>
-  )
-}
+  );
+};

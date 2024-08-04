@@ -4,8 +4,8 @@ import {
   ProductsGroupList,
   Title,
   TopBar,
-} from "@/components/shared"
-import { prisma } from "../../prisma/prisma-client"
+} from "@/components/shared";
+import { prisma } from "../../../prisma/prisma-client";
 
 export default async function Home() {
   const categories = await prisma.category.findMany({
@@ -17,8 +17,8 @@ export default async function Home() {
         },
       },
     },
-  })
-  console.log("categories", categories)
+  });
+  console.log("categories", categories);
 
   return (
     <>
@@ -57,5 +57,5 @@ export default async function Home() {
         </div>
       </Container>
     </>
-  )
+  );
 }
