@@ -1,6 +1,6 @@
 "use client"
 
-import { useFilters, useIngredients, useQueryFilters } from "@/hooks"
+import { useFilters, useIngredients, useQueryFilters } from "../../hooks"
 import React from "react"
 import { Input, RangeSlider } from "../ui"
 import { CheckboxFiltersGroup } from "./checkbox-filters-group"

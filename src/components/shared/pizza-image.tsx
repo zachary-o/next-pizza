@@ -1,13 +1,14 @@
+import { PizzaSize } from "@/constants/pizza"
 import { cn } from "@/lib/utils"
 import React from "react"
 
 interface Props {
   className?: string
   imageUrl: string
-  size: 20 | 30 | 40
+  size: PizzaSize
 }
 
-export const ProductImage: React.FC<Props> = ({
+export const PizzaImage: React.FC<Props> = ({
   className,
   imageUrl,
   size,

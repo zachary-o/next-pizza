@@ -1,8 +1,8 @@
-import React from "react";
-import { prisma } from "../../../../../prisma/prisma-client";
-import { notFound } from "next/navigation";
-import { Container, ProductImage, Title } from "@/components/shared";
+import { Container, PizzaImage, Title } from "@/components/shared";
 import { GroupVariants } from "@/components/shared/group-variants";
+import { prisma } from "@/prisma/prisma-client";
+import { notFound } from "next/navigation";
+import React from "react";
 
 interface Props {
   params: { id: string };
@@ -18,7 +18,7 @@ const ProductPage: React.FC<Props> = async ({ params: { id } }) => {
   return (
     <Container className="flex flex-col my-10">
       <div className="flex flex-1">
-        <ProductImage className="" imageUrl={product.imageUrl} size={20} />
+        <PizzaImage className="" imageUrl={product.imageUrl} size={20} />
 
         <div className="w-[490px] bg-[#f7f6f5] p-7">
           <Title
