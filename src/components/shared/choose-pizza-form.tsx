@@ -55,7 +55,7 @@ export const ChoosePizzaForm: React.FC<Props> = ({
     if (availableSize) {
       setSize(Number(availableSize.value) as PizzaSize)
     }
-  }, [type])
+  }, [availablePizzaSizes, type])
 
   return (
     <div className={cn("flex flex-1", className)}>
