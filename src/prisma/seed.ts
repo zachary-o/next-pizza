@@ -1,5 +1,5 @@
-import { hashSync } from "bcrypt"
-import { _ingredients, categories, products } from "./constants"
+import { hashSync } from "bcrypt";
+import { _ingredients, categories, products } from "./constants";
 import { prisma } from "./prisma-client";
 
 const randomNumber = (min: number, max: number) => {
