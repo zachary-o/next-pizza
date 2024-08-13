@@ -1,9 +1,9 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { useCategoryStore } from "@/store";
 import { Category } from "@prisma/client";
 import React from "react";
-import { useCategoryStore } from "../../store/category";
 
 interface Props {
   categories: Category[]
