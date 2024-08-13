@@ -1,12 +1,12 @@
 import { cn } from "@/lib/utils";
-import { ArrowRight, ShoppingCart, User } from "lucide-react";
+import { User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui";
+import { CartButton } from "./cart-button";
 import { Container } from "./container";
 import { SearchInput } from "./search-input";
-import { CartButton } from "./cart-button";
 
 interface Props {
   className?: string;

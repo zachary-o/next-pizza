@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useCartStore } from "@/store"
-import { ArrowRight } from "lucide-react"
-import Link from "next/link"
-import { PropsWithChildren, useEffect } from "react"
-import { Button } from "../ui"
+import { useCartStore } from "@/store";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { PropsWithChildren, useEffect } from "react";
+import { Button } from "../ui";
 import {
   Sheet,
   SheetContent,
@@ -12,13 +12,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet"
-import { CartDrawerItem } from "./cart-drawer-item"
-import { getCartItemDetails } from "@/lib"
-import { PizzaSize, PizzaType } from "@/constants/pizza"
+} from "../ui/sheet";
+import { CartDrawerItem } from "./cart-drawer-item";
+import { getCartItemDetails } from "@/lib";
+import { PizzaSize, PizzaType } from "@/constants/pizza";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
 export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
@@ -29,11 +29,11 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
     state.totalAmount,
     state.items,
     state.fetchCartItems,
-  ])
+  ]);
 
   useEffect(() => {
-    fetchCartItems()
-  }, [])
+    fetchCartItems();
+  }, []);
 
   return (
     <Sheet>
@@ -41,7 +41,10 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
       <SheetContent className="flex flex-col justify-between pb-0 bg-[#f4f1ee]">
         <SheetHeader>
           <SheetTitle>
-            <span className="fond-bold">3 items</span> in cart
+            <span className="fond-bold">
+              {items.length} {items.length === 1 ? "item" : "items"}
+            </span>{" "}
+            in cart
           </SheetTitle>
         </SheetHeader>
 
@@ -88,5 +91,5 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
-}
+  );
+};
