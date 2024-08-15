@@ -8,19 +8,20 @@ import { Title } from "./title"
 interface Props {
   imageUrl: string
   name: string
-  addProductToCart: VoidFunction
+  price: number
+  loading?: boolean
+  onSubmit: VoidFunction
   className?: string
 }
 
 export const ChooseProductForm: React.FC<Props> = ({
   imageUrl,
   name,
-  addProductToCart,
+  price,
+  loading,
+  onSubmit,
   className,
 }) => {
-  const textDetails = "Lorem ipsummmmmmm"
-  const totalPrice = 20
-
   return (
     <div className={cn("flex flex-1", className)}>
       <div className="flex items-center justify-center flex-1 relative w-full">
@@ -34,10 +35,12 @@ export const ChooseProductForm: React.FC<Props> = ({
       <div className="w-[490px] bg-[#f7f6f5] p-7">
         <Title className="font-extrabold mb-1" size="md" text={name} />
 
-        <p className="text-gray-400">{textDetails}</p>
-
-        <Button className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Add to cart for ${totalPrice}
+        <Button
+          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10"
+          loading={loading}
+          onClick={() => onSubmit()}
+        >
+          Add to cart for ${price}
         </Button>
       </div>
     </div>

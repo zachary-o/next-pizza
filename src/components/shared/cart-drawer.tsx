@@ -1,10 +1,10 @@
-"use client";
+"use client"
 
-import { useCartStore } from "@/store";
-import { ArrowRight } from "lucide-react";
-import Link from "next/link";
-import { PropsWithChildren, useEffect } from "react";
-import { Button } from "../ui";
+import { useCartStore } from "@/store"
+import { ArrowRight } from "lucide-react"
+import Link from "next/link"
+import { PropsWithChildren, useEffect } from "react"
+import { Button } from "../ui"
 import {
   Sheet,
   SheetContent,
@@ -12,32 +12,42 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet";
-import { CartDrawerItem } from "./cart-drawer-item";
-import { getCartItemDetails } from "@/lib";
-import { PizzaSize, PizzaType } from "@/constants/pizza";
+} from "../ui/sheet"
+import { CartDrawerItem } from "./cart-drawer-item"
+import { getCartItemDetails } from "@/lib"
+import { PizzaSize, PizzaType } from "@/constants/pizza"
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
   children,
   className,
 }) => {
-  const [totalAmount, items, fetchCartItems, updateCartItemQuantity, removeCartItem] = useCartStore((state) => [
+  const [
+    totalAmount,
+    items,
+    fetchCartItems,
+    updateCartItemQuantity,
+    removeCartItem,
+  ] = useCartStore((state) => [
     state.totalAmount,
     state.items,
     state.fetchCartItems,
     state.updateCartItemQuantity,
-    state.removeCartItem
-  ]);
+    state.removeCartItem,
+  ])
 
   useEffect(() => {
-    fetchCartItems();
-  }, []);
+    fetchCartItems()
+  }, [])
 
-  const onClickCountButton = (id: number, quantity: number, type: "plus" | "minus") => {
+  const onClickCountButton = (
+    id: number,
+    quantity: number,
+    type: "plus" | "minus"
+  ) => {
     const newQuantity = type === "plus" ? quantity + 1 : quantity - 1
 
     updateCartItemQuantity(id, newQuantity)
@@ -57,29 +67,30 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
         </SheetHeader>
 
         <div className="-mx-6 mt-5 overflow-auto flex-1">
-          <div className="mb-2">
-            {items.map((item) => (
+          {items.map((item) => (
+            <div className="mb-2" key={item.id}>
               <CartDrawerItem
-                key={item.id}
                 id={item.id}
                 imageUrl={item.imageUrl}
                 name={item.name}
                 details={
                   item.pizzaSize && item.pizzaType
                     ? getCartItemDetails(
-                      item.pizzaType as PizzaType,
-                      item.pizzaSize as PizzaSize,
-                      item.ingredients
-                    )
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize,
+                        item.ingredients
+                      )
                     : ""
                 }
                 price={item.price}
                 quantity={item.quantity}
-                onClickCountButton={(type) => onClickCountButton(item.id, item.quantity, type)}
+                onClickCountButton={(type) =>
+                  onClickCountButton(item.id, item.quantity, type)
+                }
                 onClickRemoveCartItem={() => removeCartItem(item.id)}
               />
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
 
         <SheetFooter className="-mx-6 bg-white p-8">
@@ -101,5 +112,5 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  );
-};
+  )
+}
