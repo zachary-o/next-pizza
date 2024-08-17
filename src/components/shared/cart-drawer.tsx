@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { useCartStore } from "@/store"
-import { ArrowRight } from "lucide-react"
-import Link from "next/link"
-import { PropsWithChildren, useEffect } from "react"
-import { Button } from "../ui"
+import { useCartStore } from "@/store";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+import { PropsWithChildren, useEffect } from "react";
+import { Button } from "../ui";
 import {
   Sheet,
   SheetContent,
@@ -12,13 +12,13 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet"
-import { CartDrawerItem } from "./cart-drawer-item"
-import { getCartItemDetails } from "@/lib"
-import { PizzaSize, PizzaType } from "@/constants/pizza"
+} from "../ui/sheet";
+import { CartDrawerItem } from "./cart-drawer-item";
+import { getCartItemDetails } from "@/lib";
+import { PizzaSize, PizzaType } from "@/constants/pizza";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
 export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
@@ -37,21 +37,21 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
     state.fetchCartItems,
     state.updateCartItemQuantity,
     state.removeCartItem,
-  ])
+  ]);
 
   useEffect(() => {
-    fetchCartItems()
-  }, [])
+    fetchCartItems();
+  }, []);
 
   const onClickCountButton = (
     id: number,
     quantity: number,
     type: "plus" | "minus"
   ) => {
-    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
 
-    updateCartItemQuantity(id, newQuantity)
-  }
+    updateCartItemQuantity(id, newQuantity);
+  };
 
   return (
     <Sheet>
@@ -84,6 +84,7 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
                 }
                 price={item.price}
                 quantity={item.quantity}
+                disabled={item.disabled}
                 onClickCountButton={(type) =>
                   onClickCountButton(item.id, item.quantity, type)
                 }
@@ -112,5 +113,5 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
         </SheetFooter>
       </SheetContent>
     </Sheet>
-  )
-}
+  );
+};

@@ -1,46 +1,46 @@
-import { useSearchParams } from "next/navigation"
-import { useState } from "react"
-import { useSet } from "react-use"
+import { useSearchParams } from "next/navigation";
+import { useMemo, useState } from "react";
+import { useSet } from "react-use";
 
 export interface PriceRange {
-  priceFrom?: number
-  priceTo?: number
+  priceFrom?: number;
+  priceTo?: number;
 }
 
 export interface QueryFilters extends PriceRange {
-  pizzaTypes: string
-  sizes: string
-  ingredients: string
+  pizzaTypes: string;
+  sizes: string;
+  ingredients: string;
 }
 
 export interface Filters {
-  sizes: Set<string>
-  pizzaTypes: Set<string>
-  selectedIngredients: Set<string>
-  priceRange: PriceRange
+  sizes: Set<string>;
+  pizzaTypes: Set<string>;
+  selectedIngredients: Set<string>;
+  priceRange: PriceRange;
 }
 
 interface ReturnTypes extends Filters {
-  handleUpdatePriceRange: (name: keyof PriceRange, value: number) => void
-  togglePizzaSizes: (value: string) => void
-  togglePizzaTypes: (value: string) => void
-  toggleIngredients: (value: string) => void
+  handleUpdatePriceRange: (name: keyof PriceRange, value: number) => void;
+  togglePizzaSizes: (value: string) => void;
+  togglePizzaTypes: (value: string) => void;
+  toggleIngredients: (value: string) => void;
 }
 
 export const useFilters = (): ReturnTypes => {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
 
   //   Ingredients filter
   const [selectedIngredients, { toggle: toggleIngredients }] = useSet(
     new Set<string>(searchParams.get("ingredients")?.split(","))
-  )
+  );
 
   //   Pizza sizes filter
   const [sizes, { toggle: togglePizzaSizes }] = useSet(
     new Set<string>(
       searchParams.has("sizes") ? searchParams.get("sizes")?.split(",") : []
     )
-  )
+  );
 
   //   Dough types filter
   const [pizzaTypes, { toggle: togglePizzaTypes }] = useSet(
@@ -49,29 +49,32 @@ export const useFilters = (): ReturnTypes => {
         ? searchParams.get("pizzaTypes")?.split(",")
         : []
     )
-  )
+  );
 
   //   Price range filter
   const [priceRange, setPriceRange] = useState<PriceRange>({
     priceFrom: Number(searchParams.get("priceFrom")) || undefined,
     priceTo: Number(searchParams.get("priceTo")) || undefined,
-  })
+  });
 
   const handleUpdatePriceRange = (name: keyof PriceRange, value: number) => {
-    setPriceRange(prev => ({
+    setPriceRange((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
-  return {
-    selectedIngredients,
-    sizes,
-    pizzaTypes,
-    priceRange,
-    toggleIngredients,
-    togglePizzaSizes,
-    togglePizzaTypes,
-    handleUpdatePriceRange,
-  }
-}
+  return useMemo(
+    () => ({
+      selectedIngredients,
+      sizes,
+      pizzaTypes,
+      priceRange,
+      toggleIngredients,
+      togglePizzaSizes,
+      togglePizzaTypes,
+      handleUpdatePriceRange,
+    }),
+    [selectedIngredients, sizes, pizzaTypes, priceRange]
+  );
+};

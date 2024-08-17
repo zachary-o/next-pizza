@@ -1,42 +1,22 @@
-"use client"
+"use client";
 
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { cn } from "@/lib/utils"
-import { useCartStore } from "@/store"
-import { useRouter } from "next/navigation"
-import React from "react"
-import toast from "react-hot-toast"
-import { ProductWithRelations } from "../../../@types/prisma"
-import { ChoosePizzaForm } from "../choose-pizza-form"
-import { ChooseProductForm } from "../choose-product-form"
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { cn } from "@/lib/utils";
+import { useCartStore } from "@/store";
+import { useRouter } from "next/navigation";
+import React from "react";
+import toast from "react-hot-toast";
+import { ProductWithRelations } from "../../../@types/prisma";
+import { ProductForm } from "../product-form";
 
 interface Props {
-  product: ProductWithRelations
-  className?: string
+  product: ProductWithRelations;
+  className?: string;
 }
 
 export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
-  const router = useRouter()
-  const firstItem = product.productOptions[0]
-  const isPizzaForm = Boolean(firstItem.pizzaType)
-  const [loading, addCartItem] = useCartStore(state => [state.loading, state.addCartItem])
-
-  const onSubmit = async (productOptionId?: number, ingredients?: number[]) => {
-    try {
-      const itemId = productOptionId ?? firstItem.id
-
-      await addCartItem({
-        productOptionId: itemId,
-        ingredients
-      })
-
-      toast.success("Product added to cart")
-      router.back()
-    } catch (error) {
-      toast.error("Failed to add pizza to cart")
-      console.error(error)
-    }
-  }
+  const router = useRouter();
+  
 
   return (
     <Dialog open={Boolean(product)} onOpenChange={() => router.back()}>
@@ -46,25 +26,8 @@ export const ChooseProductModal: React.FC<Props> = ({ product, className }) => {
           className
         )}
       >
-        {isPizzaForm ? (
-          <ChoosePizzaForm
-            imageUrl={product.imageUrl}
-            name={product.name}
-            ingredients={product.ingredients}
-            productOptions={product.productOptions}
-            loading={loading}
-            onSubmit={onSubmit}
-          />
-        ) : (
-          <ChooseProductForm
-            imageUrl={product.imageUrl}
-            name={product.name}
-            price={firstItem.price}
-            loading={loading}
-            onSubmit={onSubmit}
-          />
-        )}
+        <ProductForm product={product} closeModal={() => router.back()}/>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
