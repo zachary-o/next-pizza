@@ -15,7 +15,7 @@ interface Props {
   className?: string
 }
 
-const CheckoutPage: React.FC<Props> = ({ className }) => {
+export default function CheckoutPage({ className }: Props) {
   const { totalAmount, items, updateCartItemQuantity, removeCartItem } =
     useCart()
 
@@ -64,4 +64,3 @@ const CheckoutPage: React.FC<Props> = ({ className }) => {
   )
 }
 
-export default CheckoutPage
