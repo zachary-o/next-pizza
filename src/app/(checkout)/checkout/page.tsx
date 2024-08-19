@@ -11,11 +11,7 @@ import { useCart } from "@/hooks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 
-interface Props {
-  className?: string
-}
-
-export default function CheckoutPage({ className }: Props) {
+export default function CheckoutPage() {
   const { totalAmount, items, updateCartItemQuantity, removeCartItem } =
     useCart()
 
