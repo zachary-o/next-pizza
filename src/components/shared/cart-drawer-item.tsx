@@ -1,14 +1,14 @@
-import { cn } from "@/lib/utils";
-import { Trash2Icon } from "lucide-react";
-import React from "react";
-import * as CartItem from "./cart-item-details";
-import { CartItemProps } from "./cart-item-details/cart-item-details.types";
-import { CountButton } from "./count-button";
+import { cn } from "@/lib/utils"
+import { Trash2Icon } from "lucide-react"
+import React from "react"
+import * as CartItem from "./cart-item-details"
+import { CartItemProps } from "./cart-item-details/cart-item-details.types"
+import { CountButton } from "./count-button"
 
 interface Props extends CartItemProps {
-  onClickCountButton?: (type: "plus" | "minus") => void;
-  onClickRemoveCartItem?: () => void;
-  className?: string;
+  onClickCountButton?: (type: "plus" | "minus") => void
+  onClickRemoveCartItem?: () => void
+  className?: string
 }
 
 export const CartDrawerItem: React.FC<Props> = ({
@@ -23,7 +23,7 @@ export const CartDrawerItem: React.FC<Props> = ({
   onClickRemoveCartItem,
   className,
 }) => {
-  console.log("disabled", disabled);
+  console.log("disabled", disabled)
   return (
     <div
       className={cn(
@@ -51,5 +51,5 @@ export const CartDrawerItem: React.FC<Props> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

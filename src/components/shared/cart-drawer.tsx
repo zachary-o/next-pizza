@@ -1,13 +1,14 @@
-"use client";
+"use client"
 
-import { PizzaSize, PizzaType } from "@/constants/pizza";
-import { getCartItemDetails } from "@/lib";
-import { useCartStore } from "@/store";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-import { PropsWithChildren, useEffect } from "react";
-import { Button } from "../ui";
+import { PizzaSize, PizzaType } from "@/constants/pizza"
+import { useCart } from "@/hooks"
+import { getCartItemDetails } from "@/lib"
+import { cn } from "@/lib/utils"
+import { ArrowLeft, ArrowRight } from "lucide-react"
+import Image from "next/image"
+import Link from "next/link"
+import { PropsWithChildren, useState } from "react"
+import { Button } from "../ui"
 import {
   Sheet,
   SheetClose,
@@ -16,46 +17,24 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet";
-import { CartDrawerItem } from "./cart-drawer-item";
-import { Title } from "./title";
-import { cn } from "@/lib/utils";
+} from "../ui/sheet"
+import { CartDrawerItem } from "./cart-drawer-item"
+import { Title } from "./title"
 
-interface Props {
-  className?: string;
-}
-
-export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
-  children,
-  className,
-}) => {
-  const [
-    totalAmount,
-    items,
-    fetchCartItems,
-    updateCartItemQuantity,
-    removeCartItem,
-  ] = useCartStore((state) => [
-    state.totalAmount,
-    state.items,
-    state.fetchCartItems,
-    state.updateCartItemQuantity,
-    state.removeCartItem,
-  ]);
-
-  useEffect(() => {
-    fetchCartItems();
-  }, []);
+export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
+  const [redirecting, setRedirecting] = useState(false)
+  const { totalAmount, items, updateCartItemQuantity, removeCartItem } =
+    useCart()
 
   const onClickCountButton = (
     id: number,
     quantity: number,
     type: "plus" | "minus"
   ) => {
-    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1
 
-    updateCartItemQuantity(id, newQuantity);
-  };
+    updateCartItemQuantity(id, newQuantity)
+  }
 
   return (
     <Sheet>
@@ -109,15 +88,11 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
                       id={item.id}
                       imageUrl={item.imageUrl}
                       name={item.name}
-                      details={
-                        item.pizzaSize && item.pizzaType
-                          ? getCartItemDetails(
-                              item.pizzaType as PizzaType,
-                              item.pizzaSize as PizzaSize,
-                              item.ingredients
-                            )
-                          : ""
-                      }
+                      details={getCartItemDetails(
+                        item.ingredients,
+                        item.pizzaType as PizzaType,
+                        item.pizzaSize as PizzaSize
+                      )}
                       price={item.price}
                       quantity={item.quantity}
                       disabled={item.disabled}
@@ -139,8 +114,13 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
                     </span>
                     <span className="font-bold text-lg">${totalAmount}</span>
                   </div>
-                  <Link href="/cart">
-                    <Button className="w-full h-12 text-base" type="submit">
+                  <Link href="/checkout">
+                    <Button
+                      className="w-full h-12 text-base"
+                      type="submit"
+                      loading={redirecting}
+                      onClick={() => setRedirecting(true)}
+                    >
                       Order
                       <ArrowRight className="w-5 ml-2" />
                     </Button>
@@ -152,5 +132,5 @@ export const CartDrawer: React.FC<PropsWithChildren<Props>> = ({
         </div>
       </SheetContent>
     </Sheet>
-  );
-};
+  )
+}

@@ -1,21 +1,20 @@
-import { PizzaType } from "@/constants/pizza";
-import { getCartItemDetails } from "@/lib";
-import { Ingredient } from "@prisma/client";
-
+import { PizzaType } from "@/constants/pizza"
+import { getCartItemDetails } from "@/lib"
+import { Ingredient } from "@prisma/client"
 
 interface Props {
-  name: string;
+  name: string
   details: string
+  className?: string
 }
 
-export const CartItemInfo: React.FC<Props> = ({ name, details }) => {
-
+export const CartItemInfo: React.FC<Props> = ({ name, details, className }) => {
   return (
     <div>
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-bold flex-1 leading-6">{name}</h2>
       </div>
-      {details && <p className="text-xs text-gray-400">{details}</p>}
+      {details && <p className="text-xs text-gray-400 w-[90%]">{details}</p>}
     </div>
-  );
-};
+  )
+}
