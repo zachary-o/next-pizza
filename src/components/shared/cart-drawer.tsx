@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import { PizzaSize, PizzaType } from "@/constants/pizza"
-import { useCart } from "@/hooks"
-import { getCartItemDetails } from "@/lib"
-import { cn } from "@/lib/utils"
-import { ArrowLeft, ArrowRight } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import { PropsWithChildren, useState } from "react"
-import { Button } from "../ui"
+import { PizzaSize, PizzaType } from "@/constants/pizza";
+import { useCart } from "@/hooks";
+import { getCartItemDetails } from "@/lib";
+import { cn } from "@/lib/utils";
+import { ArrowLeft, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { PropsWithChildren, useState } from "react";
+import { Button } from "../ui";
 import {
   Sheet,
   SheetClose,
@@ -17,24 +17,24 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet"
-import { CartDrawerItem } from "./cart-drawer-item"
-import { Title } from "./title"
+} from "../ui/sheet";
+import { CartDrawerItem } from "./cart-drawer-item";
+import { Title } from "./title";
 
 export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
-  const [redirecting, setRedirecting] = useState(false)
+  const [redirecting, setRedirecting] = useState(false);
   const { totalAmount, items, updateCartItemQuantity, removeCartItem } =
-    useCart()
+    useCart();
 
   const onClickCountButton = (
     id: number,
     quantity: number,
     type: "plus" | "minus"
   ) => {
-    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1
+    const newQuantity = type === "plus" ? quantity + 1 : quantity - 1;
 
-    updateCartItemQuantity(id, newQuantity)
-  }
+    updateCartItemQuantity(id, newQuantity);
+  };
 
   return (
     <Sheet>
@@ -132,5 +132,5 @@ export const CartDrawer: React.FC<PropsWithChildren> = ({ children }) => {
         </div>
       </SheetContent>
     </Sheet>
-  )
-}
+  );
+};
