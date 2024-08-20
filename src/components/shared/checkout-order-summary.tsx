@@ -1,17 +1,19 @@
 import { cn } from "@/lib/utils"
 import { ArrowRight, Package, Percent, Truck } from "lucide-react"
 import React from "react"
-import { Button } from "../ui"
+import { Button, Skeleton } from "../ui"
 import { CheckoutItemDetails } from "./checkout-item-details"
 import { WhiteBlock } from "./white-block"
 
 interface Props {
   totalAmount: number
+  loading: boolean
   className?: string
 }
 
 export const CheckoutOrderSummary: React.FC<Props> = ({
   totalAmount,
+  loading,
   className,
 }) => {
   const VAT = 15
@@ -23,7 +25,11 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
     <WhiteBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
         <span className="text-xl">Order Summary: </span>
-        <span className="text-[34px] font-extrabold">${totalPrice}</span>
+        {loading ? (
+          <Skeleton className="w-48 h-11" />
+        ) : (
+          <span className="h-11 text-[34px] font-extrabold">${totalPrice}</span>
+        )}
       </div>
       <CheckoutItemDetails
         title={
@@ -32,7 +38,13 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
             Items subtotal:
           </div>
         }
-        value={`$${totalAmount}`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `$${totalAmount}`
+          )
+        }
       />
       <CheckoutItemDetails
         title={
@@ -41,7 +53,13 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
             Tax:
           </div>
         }
-        value={`$${vatPrice}`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `$${vatPrice}`
+          )
+        }
       />
       <CheckoutItemDetails
         title={
@@ -50,12 +68,19 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
             Delivery:
           </div>
         }
-        value={`$${DELIVERY_PRICE}`}
+        value={
+          loading ? (
+            <Skeleton className="w-16 h-6 rounded-[6px]" />
+          ) : (
+            `$${DELIVERY_PRICE}`
+          )
+        }
       />
 
       <Button
         className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
         type="submit"
+        loading={loading}
       >
         Go to checkout <ArrowRight className="w-5 ml-2" />
       </Button>

@@ -25,7 +25,7 @@ export const FormInput: React.FC<Props> = ({
   } = useFormContext();
 
   const value = watch(name);
-  const errorText = errors[name]?.message as string;
+  const errorText = errors?.[name]?.message as string;
 
   const onClickClearInput = () => {
     setValue(name, "", { shouldValidate: true });
