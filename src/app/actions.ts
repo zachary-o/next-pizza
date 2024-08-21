@@ -1,11 +1,11 @@
 "use server"
 
+import { PayOrderEmailTemplate } from "@/components/shared"
 import { CheckoutFormValues } from "@/components/shared/checkout-components/checkout-form-schema"
-import { prisma } from "../../prisma/prisma-client"
+import { createPayment, sendEmail } from "@/lib"
 import { OrderStatus } from "@prisma/client"
 import { cookies } from "next/headers"
-import { sendEmail } from "@/lib"
-import { PayOrderEmailTemplate } from "@/components/shared"
+import { prisma } from "../../prisma/prisma-client"
 
 export async function createOrder(data: CheckoutFormValues) {
   try {
@@ -77,15 +77,39 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     })
 
+    const paymentData = await createPayment(
+      order.id,
+      order.totalAmount,
+      data.email
+    )
+
+    if (!paymentData) {
+      throw new Error("Payment data not found")
+    }
+
+    await prisma.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        paymentId: paymentData.id,
+      },
+    })
+
     await sendEmail(
       data.email,
       "Next Pizza | Pay for the order N#" + order.id,
       PayOrderEmailTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: "https://wayforpay.com/uk/demo-shop",
+        paymentUrl: paymentData.paymentUrl,
       })
     )
+    
+
+    console.log('paymentData', paymentData)
+    return paymentData
+
   } catch (error) {
     console.log("[CreateOrder] Server Error", error)
   }

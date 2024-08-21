@@ -57,9 +57,9 @@ export default function CheckoutPage() {
         { icon: "✅" }
       )
 
-      // if (url) {
-      //   location.href = url
-      // }
+      if (url) {
+        location.href = url
+      }
     } catch (error) {
       console.log("error", error)
       setSubmitting(false)

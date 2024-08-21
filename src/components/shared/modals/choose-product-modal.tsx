@@ -2,10 +2,8 @@
 
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { useCartStore } from "@/store";
 import { useRouter } from "next/navigation";
 import React from "react";
-import toast from "react-hot-toast";
 import { ProductWithRelations } from "../../../@types/prisma";
 import { ProductForm } from "../product-form";
 

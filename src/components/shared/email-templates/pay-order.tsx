@@ -3,7 +3,7 @@ import React from "react"
 interface Props {
   orderId: number
   totalAmount: number
-  paymentUrl: string
+  paymentUrl?: string
 }
 
 export const PayOrderEmailTemplate: React.FC<Props> = ({
