@@ -7,20 +7,22 @@ import { WhiteBlock } from "./white-block"
 
 interface Props {
   totalAmount: number
+  subtotalAmount: number
+  vatPrice: number
+  deliveryFee: number
   loading: boolean
   className?: string
 }
 
 export const CheckoutOrderSummary: React.FC<Props> = ({
   totalAmount,
+  subtotalAmount,
+  vatPrice,
+  deliveryFee,
   loading,
   className,
 }) => {
-  const VAT = 15
-  const DELIVERY_PRICE = 5
-
-  const vatPrice = (totalAmount * VAT) / 100
-  const totalPrice = totalAmount + vatPrice + DELIVERY_PRICE
+  
   return (
     <WhiteBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
@@ -28,7 +30,7 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
         {loading ? (
           <Skeleton className="w-48 h-11" />
         ) : (
-          <span className="h-11 text-[34px] font-extrabold">${totalPrice}</span>
+          <span className="h-11 text-[34px] font-extrabold">${subtotalAmount}</span>
         )}
       </div>
       <CheckoutItemDetails
@@ -72,18 +74,17 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
           loading ? (
             <Skeleton className="w-16 h-6 rounded-[6px]" />
           ) : (
-            `$${DELIVERY_PRICE}`
+            `$${deliveryFee}`
           )
         }
       />
-
-      <Button
-        className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
-        type="submit"
-        loading={loading}
-      >
-        Go to checkout <ArrowRight className="w-5 ml-2" />
-      </Button>
+        <Button
+          className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
+          type="submit"
+          loading={loading}
+        >
+          Go to checkout <ArrowRight className="w-5 ml-2" />
+        </Button>
     </WhiteBlock>
   )
 }

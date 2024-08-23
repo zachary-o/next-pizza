@@ -51,7 +51,6 @@ export async function POST(req: NextRequest) {
     }
 
     const userCart = await findOrCreateCart(token);
-    console.log("userCart", userCart);
 
     const data = (await req.json()) as CreateCartItemValues;
 

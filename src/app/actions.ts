@@ -2,7 +2,7 @@
 
 import { PayOrderEmailTemplate } from "@/components/shared"
 import { CheckoutFormValues } from "@/components/shared/checkout-components/checkout-form-schema"
-import { createPayment, sendEmail } from "@/lib"
+import { sendEmail } from "@/lib"
 import { OrderStatus } from "@prisma/client"
 import { cookies } from "next/headers"
 import { prisma } from "../../prisma/prisma-client"
@@ -61,7 +61,7 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     })
 
-    // Reser cart
+    // Reset cart
     await prisma.cart.update({
       where: {
         id: userCart.id,
@@ -77,24 +77,16 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     })
 
-    const paymentData = await createPayment(
-      order.id,
-      order.totalAmount,
-      data.email
-    )
+    
 
-    if (!paymentData) {
-      throw new Error("Payment data not found")
-    }
-
-    await prisma.order.update({
-      where: {
-        id: order.id,
-      },
-      data: {
-        paymentId: paymentData.id,
-      },
-    })
+    // await prisma.order.update({
+    //   where: {
+    //     id: order.id,
+    //   },
+    //   data: {
+    //     paymentId: paymentData.id,
+    //   },
+    // })
 
     await sendEmail(
       data.email,
@@ -102,14 +94,9 @@ export async function createOrder(data: CheckoutFormValues) {
       PayOrderEmailTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
-        paymentUrl: paymentData.paymentUrl,
       })
     )
     
-
-    console.log('paymentData', paymentData)
-    return paymentData
-
   } catch (error) {
     console.log("[CreateOrder] Server Error", error)
   }

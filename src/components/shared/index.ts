@@ -24,6 +24,7 @@ export { CheckoutOrderSummary } from "./checkout-order-summary"
 export { RequiredSymbol } from "./required-symbol"
 export { ErrorText } from "./error-text"
 export { ClearButton } from "./clear-button"
+export { PaymentForm } from "./payment-form"
 
 export * from "./modals"
 export * from "./cart-item-details"

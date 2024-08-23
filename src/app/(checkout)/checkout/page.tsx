@@ -13,18 +13,22 @@ import {
 } from "@/components/shared/checkout-components/checkout-form-schema"
 import { useCart } from "@/hooks"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useState } from "react"
+import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
 export default function CheckoutPage() {
+  const router = useRouter();
   const [submitting, setSubmitting] = useState(false)
   const {
     totalAmount,
+    subtotalAmount,
     items,
     loading,
     updateCartItemQuantity,
     removeCartItem,
+    calculateSubtotal
   } = useCart()
 
   const form = useForm<CheckoutFormValues>({
@@ -38,6 +42,12 @@ export default function CheckoutPage() {
     },
   })
 
+  const VAT = 15
+  const DELIVERY_PRICE = 5
+
+  const vatPrice = (totalAmount * VAT) / 100
+  const totalPrice = totalAmount + vatPrice + DELIVERY_PRICE
+
   const onClickCountButton = (
     id: number,
     quantity: number,
@@ -48,55 +58,60 @@ export default function CheckoutPage() {
     updateCartItemQuantity(id, newQuantity)
   }
 
-  const onSubmit: SubmitHandler<CheckoutFormValues> = async (data) => {
+  useEffect(() => {
+    calculateSubtotal(totalPrice)
+  }, [totalAmount, vatPrice, DELIVERY_PRICE])
+
+  const onSubmit: SubmitHandler<CheckoutFormValues> = async (data: CheckoutFormValues) => {
     try {
       setSubmitting(true)
-      const url = await createOrder(data)
+      await createOrder(data);
       toast.success(
         "Order placed successfully! 📝Redirecting to the payment page...",
         { icon: "✅" }
       )
-
-      if (url) {
-        location.href = url
-      }
+      router.push("/payment");
     } catch (error) {
       console.log("error", error)
       setSubmitting(false)
       toast.error("Failed to checkout", { icon: "❌" })
     }
-    createOrder(data)
   }
 
   return (
-    <div className="mt-10">
-      <Title className="font-extrabold mb-8 text-[36px]" text="Checkout" />
+    <>
+      <div className="mt-10">
+        <Title className="font-extrabold mb-8 text-[36px]" text="Checkout" />
 
-      <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex gap-10">
-            {/* Left side */}
-            <div className="flex flex-col gap-10 flex-1 mb-20">
-              <CheckoutCart
-                items={items}
-                loading={loading}
-                onClickCountButton={onClickCountButton}
-                removeCartItem={removeCartItem}
-              />
-              <CheckoutPersonalInfo loading={loading} />
-              <CheckoutAdditionalInfo loading={loading} />
-            </div>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="flex gap-10">
+              {/* Left side */}
+              <div className="flex flex-col gap-10 flex-1 mb-20">
+                <CheckoutCart
+                  items={items}
+                  loading={loading}
+                  onClickCountButton={onClickCountButton}
+                  removeCartItem={removeCartItem}
+                />
+                <CheckoutPersonalInfo loading={loading} />
+                <CheckoutAdditionalInfo loading={loading} />
+              </div>
 
-            {/* Right side */}
-            <div className="w-[450px]">
-              <CheckoutOrderSummary
-                totalAmount={totalAmount}
-                loading={loading || submitting}
-              />
+              {/* Right side */}
+              <div className="w-[450px]">
+                <CheckoutOrderSummary
+                  totalAmount={totalAmount}
+                  subtotalAmount={subtotalAmount}
+                  vatPrice={vatPrice}
+                  deliveryFee={DELIVERY_PRICE}
+                  loading={loading || submitting}
+                />
+              </div>
             </div>
-          </div>
-        </form>
-      </FormProvider>
-    </div>
+          </form>
+        </FormProvider>
+      </div>
+    </>
   )
 }
