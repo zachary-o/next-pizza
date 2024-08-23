@@ -13,22 +13,23 @@ import {
 } from "@/components/shared/checkout-components/checkout-form-schema"
 import { useCart } from "@/hooks"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 
 export default function CheckoutPage() {
-  const router = useRouter();
+  const router = useRouter()
   const [submitting, setSubmitting] = useState(false)
   const {
     totalAmount,
     subtotalAmount,
     items,
     loading,
+    paymentId,
     updateCartItemQuantity,
     removeCartItem,
-    calculateSubtotal
+    calculateSubtotal,
   } = useCart()
 
   const form = useForm<CheckoutFormValues>({
@@ -62,15 +63,17 @@ export default function CheckoutPage() {
     calculateSubtotal(totalPrice)
   }, [totalAmount, vatPrice, DELIVERY_PRICE])
 
-  const onSubmit: SubmitHandler<CheckoutFormValues> = async (data: CheckoutFormValues) => {
+  const onSubmit: SubmitHandler<CheckoutFormValues> = async (
+    data: CheckoutFormValues
+  ) => {
     try {
       setSubmitting(true)
-      await createOrder(data);
+      await createOrder(data, paymentId, subtotalAmount)
       toast.success(
         "Order placed successfully! 📝Redirecting to the payment page...",
         { icon: "✅" }
       )
-      router.push("/payment");
+      router.push("/payment")
     } catch (error) {
       console.log("error", error)
       setSubmitting(false)

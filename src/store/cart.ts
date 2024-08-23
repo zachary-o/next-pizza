@@ -25,6 +25,9 @@ export interface CartState {
 
   // Calculates subtotal amount to pay
   calculateSubtotal: (newSubtotal: number) => void
+
+  // Sets Stripe payment id
+  setPaymentId: (id: string) => void
 }
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -95,11 +98,15 @@ export const useCartStore = create<CartState>((set, get) => ({
     }
   },
   calculateSubtotal: (newSubtotal: number) => {
-    console.log("Calculating subtotal:", newSubtotal)
     set((state) => ({
       ...state,
       subtotalAmount: newSubtotal,
     }))
-    console.log("Updated subtotalAmount:", get().subtotalAmount)
   },
+  setPaymentId: (id: string) => {
+    set((state) => ({
+      ...state,
+      paymentId: id
+    }))
+  }
 }))

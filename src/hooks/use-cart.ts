@@ -8,10 +8,12 @@ type ReturnProps = {
   totalAmount: number
   items: CartStateItem[]
   loading: boolean
+  paymentId: string
   updateCartItemQuantity: (id: number, quantity: number) => Promise<void>
   removeCartItem: (id: number) => Promise<void>
   addCartItem: (calues: CreateCartItemValues) => Promise<void>
   calculateSubtotal: (newSubtotal: number) => void
+  setPaymentId: (id: string) => void
 }
 
 export const useCart = (): ReturnProps => {

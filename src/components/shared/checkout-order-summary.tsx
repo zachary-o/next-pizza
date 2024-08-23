@@ -22,7 +22,6 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
   loading,
   className,
 }) => {
-  
   return (
     <WhiteBlock className={cn("p-6 sticky top-4", className)}>
       <div className="flex flex-col gap-1">
@@ -30,7 +29,9 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
         {loading ? (
           <Skeleton className="w-48 h-11" />
         ) : (
-          <span className="h-11 text-[34px] font-extrabold">${subtotalAmount}</span>
+          <span className="h-11 text-[34px] font-extrabold">
+            ${subtotalAmount}
+          </span>
         )}
       </div>
       <CheckoutItemDetails
@@ -78,13 +79,13 @@ export const CheckoutOrderSummary: React.FC<Props> = ({
           )
         }
       />
-        <Button
-          className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
-          type="submit"
-          loading={loading}
-        >
-          Go to checkout <ArrowRight className="w-5 ml-2" />
-        </Button>
+      <Button
+        className="w-full h-14 rounded-2xl mt-6 text-base font-bold"
+        type="submit"
+        loading={loading}
+      >
+        Go to checkout <ArrowRight className="w-5 ml-2" />
+      </Button>
     </WhiteBlock>
   )
 }

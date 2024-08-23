@@ -13,7 +13,7 @@ interface Props {
 export const PaymentForm: React.FC<Props> = ({ className }) => {
   const {
     subtotalAmount,
-    items,
+    setPaymentId,
     // loading,
   } = useCart()
   const stripe = useStripe()
@@ -57,10 +57,11 @@ const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
 
     if (paymentIntent) {
       const paymentId = paymentIntent.id
+      setPaymentId(paymentId)
       console.log('paymentId', paymentId)
     }
 
-    
+
     const { error } = await stripe.confirmPayment({
       elements,
       clientSecret,

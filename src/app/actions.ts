@@ -7,7 +7,7 @@ import { OrderStatus } from "@prisma/client"
 import { cookies } from "next/headers"
 import { prisma } from "../../prisma/prisma-client"
 
-export async function createOrder(data: CheckoutFormValues) {
+export async function createOrder(data: CheckoutFormValues, paymentId: string, subtotalAmount: number) {
   try {
     const cookiesStore = cookies()
     const cartToken = cookiesStore.get("cartToken")?.value
@@ -77,26 +77,23 @@ export async function createOrder(data: CheckoutFormValues) {
       },
     })
 
-    
-
-    // await prisma.order.update({
-    //   where: {
-    //     id: order.id,
-    //   },
-    //   data: {
-    //     paymentId: paymentData.id,
-    //   },
-    // })
+    await prisma.order.update({
+      where: {
+        id: order.id,
+      },
+      data: {
+        paymentId,
+      },
+    })
 
     await sendEmail(
       data.email,
       "Next Pizza | Pay for the order N#" + order.id,
       PayOrderEmailTemplate({
         orderId: order.id,
-        totalAmount: order.totalAmount,
+        totalAmount: subtotalAmount,
       })
     )
-    
   } catch (error) {
     console.log("[CreateOrder] Server Error", error)
   }
