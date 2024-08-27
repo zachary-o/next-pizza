@@ -1,22 +1,34 @@
-"use client"
+"use client";
 
-import { convertToSubcurrency } from "@/lib"
-import { useCartStore } from "@/store"
-import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
-import React, { useEffect, useState } from "react"
-import { Button } from "../ui"
+import { convertToSubcurrency } from "@/lib";
+import { useCartStore } from "@/store";
+import {
+  PaymentElement,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
+import React, { useEffect, useState } from "react";
+import { Button } from "../ui";
 
 interface Props {
-  className?: string
+  className?: string;
 }
 
 export const PaymentForm: React.FC<Props> = ({ className }) => {
-  const [subtotalAmount, setPaymentId] = useCartStore(state => [state.subtotalAmount, state.setPaymentId])
-  const stripe = useStripe()
-  const elements = useElements()
-  const [errorMessage, setErrorMessage] = useState<string>()
-  const [clientSecret, setClientSecret] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [subtotalAmount, checkoutFormData, setPaymentId] = useCartStore(
+    (state) => [
+      state.subtotalAmount,
+      state.checkoutFormData,
+      state.setPaymentId,
+    ]
+  );
+  const stripe = useStripe();
+  const elements = useElements();
+  const [errorMessage, setErrorMessage] = useState<string>();
+  const [clientSecret, setClientSecret] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  console.log("checkoutFormData", checkoutFormData);
 
   useEffect(() => {
     fetch("/api/create-payment-intent", {
@@ -28,31 +40,33 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setClientSecret(data.clientSecret)
-      })
-  }, [subtotalAmount])
+        setClientSecret(data.clientSecret);
+      });
+  }, [subtotalAmount]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setLoading(true)
+    event.preventDefault();
+    setLoading(true);
 
     if (!stripe || !elements) {
-      return
+      return;
     }
 
-    const { error: submitError } = await elements.submit()
+    const { error: submitError } = await elements.submit();
     if (submitError) {
-      setErrorMessage(submitError.message)
-      setLoading(false)
-      return
+      setErrorMessage(submitError.message);
+      setLoading(false);
+      return;
     }
 
-    const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
-    const paymentIntent = paymentIntentResult.paymentIntent
-    console.log('PaymentForm paymentIntent', paymentIntent)
+    const paymentIntentResult = await stripe.retrievePaymentIntent(
+      clientSecret
+    );
+    const paymentIntent = paymentIntentResult.paymentIntent;
+    console.log("PaymentForm paymentIntent", paymentIntent);
     if (paymentIntent) {
-      const paymentId = paymentIntent.id
-      setPaymentId(paymentId)
+      const paymentId = paymentIntent.id;
+      setPaymentId(paymentId);
 
       await fetch("/api/checkout/callback", {
         method: "POST",
@@ -60,7 +74,7 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ paymentId }),
-      })
+      });
     }
 
     const { error } = await stripe.confirmPayment({
@@ -69,14 +83,14 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
       confirmParams: {
         return_url: `http://www.localhost:3000/payment-success?amount=${subtotalAmount}`,
       },
-    })
+    });
     if (error) {
-      setErrorMessage(error.message)
+      setErrorMessage(error.message);
     } else {
     }
 
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <form className="bg-white p-2 rounded-md mt-10" onSubmit={handleSubmit}>
@@ -90,5 +104,5 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
         {!loading ? `Pay $${subtotalAmount}` : "Processing..."}
       </Button>
     </form>
-  )
-}
+  );
+};
