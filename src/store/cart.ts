@@ -104,6 +104,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     }))
   },
   setPaymentId: (id: string) => {
+    console.log('id', id)
     set((state) => ({
       ...state,
       paymentId: id

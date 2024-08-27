@@ -12,6 +12,7 @@ import {
   CheckoutFormValues,
 } from "@/components/shared/checkout-components/checkout-form-schema"
 import { useCart } from "@/hooks"
+import { useCartStore } from "@/store"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -26,12 +27,13 @@ export default function CheckoutPage() {
     subtotalAmount,
     items,
     loading,
-    paymentId,
+    
     updateCartItemQuantity,
     removeCartItem,
     calculateSubtotal,
   } = useCart()
-
+const paymentId = useCartStore(state => state.paymentId)
+console.log('CheckoutPage paymentId', paymentId)
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),
     defaultValues: {
@@ -68,6 +70,7 @@ export default function CheckoutPage() {
   ) => {
     try {
       setSubmitting(true)
+      //NO PAYMENT ID HERE
       await createOrder(data, paymentId, subtotalAmount)
       toast.success(
         "Order placed successfully! 📝Redirecting to the payment page...",

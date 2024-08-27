@@ -1,7 +1,7 @@
 "use client"
 
-import { useCart } from "@/hooks"
 import { convertToSubcurrency } from "@/lib"
+import { useCartStore } from "@/store"
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { useEffect, useState } from "react"
 import { Button } from "../ui"
@@ -11,11 +11,7 @@ interface Props {
 }
 
 export const PaymentForm: React.FC<Props> = ({ className }) => {
-  const {
-    subtotalAmount,
-    setPaymentId,
-    // loading,
-  } = useCart()
+  const [subtotalAmount, setPaymentId] = useCartStore(state => [state.subtotalAmount, state.setPaymentId])
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState<string>()
@@ -32,7 +28,6 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("data", data)
         setClientSecret(data.clientSecret)
       })
   }, [subtotalAmount])
@@ -52,15 +47,21 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
       return
     }
 
-const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
+    const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
     const paymentIntent = paymentIntentResult.paymentIntent
-
+    console.log('PaymentForm paymentIntent', paymentIntent)
     if (paymentIntent) {
       const paymentId = paymentIntent.id
       setPaymentId(paymentId)
-      console.log('paymentId', paymentId)
-    }
 
+      await fetch("/api/checkout/callback", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ paymentId }),
+      })
+    }
 
     const { error } = await stripe.confirmPayment({
       elements,
@@ -74,7 +75,6 @@ const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
     } else {
     }
 
-    
     setLoading(false)
   }
 

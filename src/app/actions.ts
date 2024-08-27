@@ -8,6 +8,8 @@ import { cookies } from "next/headers"
 import { prisma } from "../../prisma/prisma-client"
 
 export async function createOrder(data: CheckoutFormValues, paymentId: string, subtotalAmount: number) {
+
+  console.log('paymentId', paymentId)
   try {
     const cookiesStore = cookies()
     const cartToken = cookiesStore.get("cartToken")?.value
