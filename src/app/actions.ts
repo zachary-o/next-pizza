@@ -7,9 +7,11 @@ import { OrderStatus } from "@prisma/client"
 import { cookies } from "next/headers"
 import { prisma } from "../../prisma/prisma-client"
 
-export async function createOrder(data: CheckoutFormValues, paymentId: string, subtotalAmount: number) {
-
-  console.log('paymentId', paymentId)
+export async function createOrder(
+  data: CheckoutFormValues,
+  paymentId: string,
+  subtotalAmount: number
+) {
   try {
     const cookiesStore = cookies()
     const cartToken = cookiesStore.get("cartToken")?.value
@@ -96,6 +98,18 @@ export async function createOrder(data: CheckoutFormValues, paymentId: string, s
         totalAmount: subtotalAmount,
       })
     )
+
+    await fetch("http://localhost:3000/api/checkout/callback", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ paymentId: paymentId }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        return data
+      })
   } catch (error) {
     console.log("[CreateOrder] Server Error", error)
   }

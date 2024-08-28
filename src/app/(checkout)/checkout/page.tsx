@@ -37,7 +37,6 @@ export default function CheckoutPage() {
     state.setCheckoutFormData,
   ]);
 
-  console.log("CheckoutPage paymentId", paymentId);
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutFormSchema),
     defaultValues: {
@@ -77,7 +76,7 @@ export default function CheckoutPage() {
 
       setCheckoutFormData(data);
       //NO PAYMENT ID HERE
-      await createOrder(data, paymentId, subtotalAmount);
+      // await createOrder(data, paymentId, subtotalAmount);
       toast.success(
         "Order placed successfully! 📝Redirecting to the payment page...",
         { icon: "✅" }

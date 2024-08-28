@@ -8,28 +8,32 @@ import { prisma } from "../../../../../prisma/prisma-client"
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
 export async function POST(req: NextRequest) {
-    const { paymentId } = await req.json();
+  
+  const { paymentId } = await req.json()
 
-    console.log('api checkout callback paymentId', paymentId)
+  console.log("api checkout callback paymentId", paymentId)
 
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentId)
 
     if (!paymentIntent) {
+      console.log("Payment not found")
       return NextResponse.json({ error: "Payment not found" })
     }
 
     const order = await prisma.order.findFirst({
       where: {
-        id: Number(paymentId),
+        paymentId: paymentId,
       },
     })
 
     if (!order) {
+      console.log("Order not found")
       return NextResponse.json({ error: "Order not found" })
     }
 
-    const isSucceeded = paymentIntent.status === "succeeded"
+    const isSucceeded = paymentIntent.status === "requires_payment_method"
+    console.log('paymentIntent', paymentIntent)
 
     await prisma.order.update({
       where: {
@@ -49,10 +53,9 @@ export async function POST(req: NextRequest) {
         OrderSuccessTemplate({ orderId: order.id, items })
       )
     } else {
-
     }
   } catch (error) {
     console.log("[Checkout Callback] Error: ", error)
-    return NextResponse.json({ error: "Server Error" })
+    return NextResponse.json({ error: "Server Errorsssssss" })
   }
 }

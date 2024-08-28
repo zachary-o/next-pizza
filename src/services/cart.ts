@@ -23,5 +23,5 @@ export const removeCartItem = async (itemId: number): Promise<CartDTO> => {
 export const addCartItem = async (
   values: CreateCartItemValues
 ): Promise<CartDTO> => {
-  return (await axiosInstance.post<CartDTO>("/cart", values)).data
+  return (await axiosInstance.post<CartDTO>("/cart/", values)).data
 }
