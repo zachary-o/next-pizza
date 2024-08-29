@@ -12,7 +12,10 @@ interface Props {
 }
 
 export const PaymentForm: React.FC<Props> = ({ className }) => {
-  const [subtotalAmount, checkoutFormData, setPaymentId] = useCartStore(state => [state.subtotalAmount, state.checkoutFormData, state.setPaymentId])
+  const [subtotalAmount, checkoutFormData] = useCartStore((state) => [
+    state.subtotalAmount,
+    state.checkoutFormData,
+  ])
   const stripe = useStripe()
   const elements = useElements()
   const [errorMessage, setErrorMessage] = useState<string>()
@@ -41,9 +44,6 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
       return
     }
 
-    const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
-    const paymentIntent = paymentIntentResult.paymentIntent
-
     const { error: submitError } = await elements.submit()
     if (submitError) {
       setErrorMessage(submitError.message)
@@ -51,9 +51,11 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
       return
     }
 
+    const paymentIntentResult = await stripe.retrievePaymentIntent(clientSecret)
+    const paymentIntent = paymentIntentResult.paymentIntent
+
     if (paymentIntent) {
       const paymentId = paymentIntent.id
-      setPaymentId(paymentId)
       await createOrder(checkoutFormData, paymentId, subtotalAmount)
     }
 
@@ -62,7 +64,7 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
       clientSecret,
       confirmParams: {
         return_url: `http://www.localhost:3000/payment-success?amount=${subtotalAmount}`,
-      }
+      },
     })
     if (error) {
       setErrorMessage(error.message)
@@ -70,6 +72,21 @@ export const PaymentForm: React.FC<Props> = ({ className }) => {
     }
 
     setLoading(false)
+  }
+
+  if (!clientSecret || !stripe || !elements) {
+    return (
+      <div className="flex items-center justify-center mt-10">
+        <div
+          className="inline-block w-8 h-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite]"
+          role="status"
+        >
+          <span className="!absolute !-m-px !w-px !h-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+            Loading...
+          </span>
+        </div>
+      </div>
+    )
   }
 
   return (

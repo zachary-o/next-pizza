@@ -10,7 +10,6 @@ export interface CartState {
   subtotalAmount: number;
   totalAmount: number;
   items: CartStateItem[];
-  paymentId: string;
   checkoutFormData: CheckoutFormValues;
 
   // Fetches the cart items via an API call
@@ -28,9 +27,6 @@ export interface CartState {
   // Calculates subtotal amount to pay
   calculateSubtotal: (newSubtotal: number) => void;
 
-  // Sets Stripe payment id
-  setPaymentId: (id: string) => void;
-
   setCheckoutFormData: (data: CheckoutFormValues) => void;
 }
 
@@ -40,7 +36,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   error: false,
   subtotalAmount: 0,
   totalAmount: 0,
-  paymentId: "",
   checkoutFormData: {
     firstName: "",
     lastName: "",
@@ -113,12 +108,6 @@ export const useCartStore = create<CartState>((set, get) => ({
     set((state) => ({
       ...state,
       subtotalAmount: newSubtotal,
-    }));
-  },
-  setPaymentId: (id: string) => {
-    set((state) => ({
-      ...state,
-      paymentId: id,
     }));
   },
   setCheckoutFormData: (data: CheckoutFormValues) => {

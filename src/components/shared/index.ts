@@ -25,6 +25,7 @@ export { RequiredSymbol } from "./required-symbol"
 export { ErrorText } from "./error-text"
 export { ClearButton } from "./clear-button"
 export { PaymentForm } from "./payment-form"
+export { ProfileButton } from "./profile-button"
 
 export * from "./modals"
 export * from "./cart-item-details"

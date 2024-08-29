@@ -1,9 +1,9 @@
 import React from "react"
-import { useFormContext } from "react-hook-form"
 import { RequiredSymbol } from "../required-symbol"
 import { Textarea } from "@/components/ui"
 import { ClearButton } from "../clear-button"
 import { ErrorText } from "../error-text"
+import { useFormContext } from "react-hook-form"
 
 interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   name: string
