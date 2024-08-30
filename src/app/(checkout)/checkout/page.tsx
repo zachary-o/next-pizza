@@ -86,39 +86,37 @@ export default function CheckoutPage() {
   }
 
   return (
-    <>
-      <div className="mt-10">
-        <Title className="font-extrabold mb-8 text-[36px]" text="Checkout" />
+    <div className="mt-10">
+      <Title className="font-extrabold mb-8 text-[36px]" text="Checkout" />
 
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <div className="flex gap-10">
-              {/* Left side */}
-              <div className="flex flex-col gap-10 flex-1 mb-20">
-                <CheckoutCart
-                  items={items}
-                  loading={loading}
-                  onClickCountButton={onClickCountButton}
-                  removeCartItem={removeCartItem}
-                />
-                <CheckoutPersonalInfo loading={loading} />
-                <CheckoutAdditionalInfo loading={loading} />
-              </div>
-
-              {/* Right side */}
-              <div className="w-[450px]">
-                <CheckoutOrderSummary
-                  totalAmount={totalAmount}
-                  subtotalAmount={subtotalAmount}
-                  vatPrice={vatPrice}
-                  deliveryFee={DELIVERY_PRICE}
-                  loading={loading || submitting}
-                />
-              </div>
+      <FormProvider {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="flex gap-10">
+            {/* Left side */}
+            <div className="flex flex-col gap-10 flex-1 mb-20">
+              <CheckoutCart
+                items={items}
+                loading={loading}
+                onClickCountButton={onClickCountButton}
+                removeCartItem={removeCartItem}
+              />
+              <CheckoutPersonalInfo loading={loading} />
+              <CheckoutAdditionalInfo loading={loading} />
             </div>
-          </form>
-        </FormProvider>
-      </div>
-    </>
+
+            {/* Right side */}
+            <div className="w-[450px]">
+              <CheckoutOrderSummary
+                totalAmount={totalAmount}
+                subtotalAmount={subtotalAmount}
+                vatPrice={vatPrice}
+                deliveryFee={DELIVERY_PRICE}
+                loading={loading || submitting}
+              />
+            </div>
+          </div>
+        </form>
+      </FormProvider>
+    </div>
   )
 }

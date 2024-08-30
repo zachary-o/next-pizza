@@ -33,7 +33,7 @@ export const CheckoutPersonalInfo: React.FC<Props> = ({
           name="lastName"
           placeholder="Last Name"
         />
-        <FormInput className="text-base" name="email" placeholder="E-mail" />
+        <FormInput className="text-base" name="email" placeholder="Email" />
         <FormInput className="text-base" name="phone" placeholder="Phone" />
       </div>
     </WhiteBlock>
