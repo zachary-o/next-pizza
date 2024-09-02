@@ -3,8 +3,7 @@ import { prisma } from "../../../../../prisma/prisma-client";
 
 export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url);
-    const code = url.searchParams.get("code");
+    const code = req.nextUrl.searchParams.get("code");
 
     if (!code) {
       return NextResponse.json(
