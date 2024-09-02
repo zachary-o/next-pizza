@@ -18,7 +18,7 @@ interface Props {
   className?: string;
 }
 
-export const Header: React.FC<Props> = async ({
+export const Header: React.FC<Props> = ({
   hasSearch = true,
   hasCart = true,
   className,
