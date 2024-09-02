@@ -32,7 +32,7 @@ export const Header: React.FC<Props> = ({
         toast.success("Account successfully confirmed");
       }, 1000);
     }
-  }, []);
+  }, [searchParams]);
 
   return (
     <header className={cn("border-b", className)}>
