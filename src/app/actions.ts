@@ -1,11 +1,16 @@
-"use server"
+"use server";
 
-import { PayOrderEmailTemplate } from "@/components/shared"
-import { CheckoutFormValues } from "@/components/shared/checkout-components/checkout-form-schema"
-import { sendEmail } from "@/lib"
-import { OrderStatus } from "@prisma/client"
-import { cookies } from "next/headers"
-import { prisma } from "../../prisma/prisma-client"
+import {
+  PayOrderEmailTemplate,
+  UserVerificationEmailTemplate,
+} from "@/components/shared";
+import { CheckoutFormValues } from "@/components/shared/checkout-components/checkout-form-schema";
+import { sendEmail } from "@/lib";
+import { getUserSession } from "@/lib/get-user-session";
+import { OrderStatus, Prisma } from "@prisma/client";
+import { hashSync } from "bcrypt";
+import { cookies } from "next/headers";
+import { prisma } from "../../prisma/prisma-client";
 
 export async function createOrder(
   data: CheckoutFormValues,
@@ -13,11 +18,11 @@ export async function createOrder(
   subtotalAmount: number
 ) {
   try {
-    const cookiesStore = cookies()
-    const cartToken = cookiesStore.get("cartToken")?.value
+    const cookiesStore = cookies();
+    const cartToken = cookiesStore.get("cartToken")?.value;
 
     if (!cartToken) {
-      throw new Error("Cart token not found")
+      throw new Error("Cart token not found");
     }
 
     // Search cart by token
@@ -38,16 +43,16 @@ export async function createOrder(
       where: {
         token: cartToken,
       },
-    })
+    });
 
     // Throw error if cart not found
     if (!userCart) {
-      throw new Error("Cart not found")
+      throw new Error("Cart not found");
     }
 
     // Throw error if cart is empty
     if (userCart?.totalAmount === 0) {
-      throw new Error("Cart is empty")
+      throw new Error("Cart is empty");
     }
 
     // Place an order
@@ -63,7 +68,7 @@ export async function createOrder(
         status: OrderStatus.PENDING,
         items: JSON.stringify(userCart.items),
       },
-    })
+    });
 
     // Reset cart
     await prisma.cart.update({
@@ -73,13 +78,13 @@ export async function createOrder(
       data: {
         totalAmount: 0,
       },
-    })
+    });
 
     await prisma.cartItem.deleteMany({
       where: {
         cartId: userCart.id,
       },
-    })
+    });
 
     await prisma.order.update({
       where: {
@@ -88,7 +93,7 @@ export async function createOrder(
       data: {
         paymentId,
       },
-    })
+    });
 
     await sendEmail(
       data.email,
@@ -97,7 +102,7 @@ export async function createOrder(
         orderId: order.id,
         totalAmount: subtotalAmount,
       })
-    )
+    );
 
     await fetch("http://localhost:3000/api/checkout/callback", {
       method: "POST",
@@ -108,9 +113,84 @@ export async function createOrder(
     })
       .then((res) => res.json())
       .then((data) => {
-        return data
-      })
+        return data;
+      });
   } catch (error) {
-    console.log("[CreateOrder] Server Error", error)
+    console.log("[CreateOrder] Server Error", error);
+  }
+}
+
+export async function updateUserInfo(body: Prisma.UserUpdateInput) {
+  try {
+    const currentUser = await getUserSession();
+
+    if (!currentUser) {
+      throw new Error("User not found");
+    }
+
+    const findUser = await prisma.user.findFirst({
+      where: {
+        id: Number(currentUser.id),
+      },
+    });
+
+    await prisma.user.update({
+      where: {
+        id: Number(currentUser.id),
+      },
+      data: {
+        fullName: body.fullName,
+        email: body.email,
+        password: body.password
+          ? hashSync(body.password as string, 10)
+          : findUser?.password,
+      },
+    });
+  } catch (error) {
+    console.log("[UPDATE USER] Error: ", error);
+    throw error;
+  }
+}
+
+export async function registerUser(body: Prisma.UserCreateInput) {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        email: body.email,
+      },
+    });
+
+    if (user) {
+      if (!user.verified) {
+        throw new Error("Email has not been confirmed");
+      }
+      throw new Error("Email already exists");
+    }
+
+    const createdUser = await prisma.user.create({
+      data: {
+        fullName: body.fullName,
+        email: body.email,
+        password: hashSync(body.password, 10),
+      },
+    });
+
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+
+    await prisma.verificationCode.create({
+      data: {
+        code,
+        userId: createdUser.id,
+      },
+    });
+
+    await sendEmail(
+      createdUser.email,
+      "Next Pizza | User Verification",
+      UserVerificationEmailTemplate({ code })
+    );
+  } catch (error) {
+    console.log("[SIGN UP USER] Error: ", error);
+    throw error;
   }
 }

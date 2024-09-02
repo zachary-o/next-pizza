@@ -1,19 +1,21 @@
-"use client"
+"use client";
 
-import { cn } from "@/lib/utils"
-import Image from "next/image"
-import Link from "next/link"
-import React, { useState } from "react"
-import { CartButton } from "./cart-button"
-import { Container } from "./container"
-import { ProfileButton } from "./profile-button"
-import { SearchInput } from "./search-input"
-import { AuthModal } from "./modals"
+import { cn } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { CartButton } from "./cart-button";
+import { Container } from "./container";
+import { AuthModal } from "./modals";
+import { ProfileButton } from "./profile-button";
+import { SearchInput } from "./search-input";
+import toast from "react-hot-toast";
 
 interface Props {
-  hasSearch?: boolean
-  hasCart?: boolean
-  className?: string
+  hasSearch?: boolean;
+  hasCart?: boolean;
+  className?: string;
 }
 
 export const Header: React.FC<Props> = ({
@@ -21,7 +23,16 @@ export const Header: React.FC<Props> = ({
   hasCart = true,
   className,
 }) => {
-  const [openAuthModal, setOpenAuthModal] = useState(false)
+  const [openAuthModal, setOpenAuthModal] = useState(false);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (searchParams.has("verified")) {
+      setTimeout(() => {
+        toast.success("Account successfully confirmed");
+      }, 1000);
+    }
+  }, []);
 
   return (
     <header className={cn("border-b", className)}>
@@ -60,5 +71,5 @@ export const Header: React.FC<Props> = ({
         </div>
       </Container>
     </header>
-  )
-}
+  );
+};

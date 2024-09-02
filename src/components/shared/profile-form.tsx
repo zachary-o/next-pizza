@@ -1,21 +1,22 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { User } from "@prisma/client"
-import { signOut } from "next-auth/react"
-import React from "react"
-import { FormProvider, useForm } from "react-hook-form"
-import toast from "react-hot-toast"
-import { Button } from "../ui"
-import { FormInput } from "./form-components"
+import { updateUserInfo } from "@/app/actions";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { Button } from "../ui";
+import { FormInput } from "./form-components";
 import {
-    formSignUpSchema,
-    TFormSignUpValues,
-} from "./modals/auth-modal/forms/schemas"
-import { Title } from "./title"
+  formSignUpSchema,
+  TFormSignUpValues,
+} from "./modals/auth-modal/forms/schemas";
+import { Title } from "./title";
 
 interface Props {
-  data: User
+  data: User;
 }
 
 export const ProfileForm: React.FC<Props> = ({ data }) => {
@@ -25,29 +26,29 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
       fullName: data.fullName,
       email: data.email,
       password: "",
-      comfirmPassword: "",
+      confirmPassword: "",
     },
-  })
+  });
 
   const onSubmit = async (data: TFormSignUpValues) => {
     try {
       await updateUserInfo({
         email: data.email,
-        fullname: data.fullName,
+        fullName: data.fullName,
         password: data.password,
-      })
+      });
 
-      toast.success("Info has been updates", { icon: "✅" })
+      toast.success("Info has been updates", { icon: "✅" });
     } catch (error) {
-      return toast.error("Failed to updated the info", { icon: "❌" })
+      return toast.error("Failed to updated the info", { icon: "❌" });
     }
-  }
+  };
 
   const onClickSignOut = () => {
     signOut({
       callbackUrl: "/",
-    })
-  }
+    });
+  };
   return (
     <div className="mx-10">
       <Title className="font-bold mt-10" size="md" text="Personal info" />
@@ -90,5 +91,5 @@ export const ProfileForm: React.FC<Props> = ({ data }) => {
         </form>
       </FormProvider>
     </div>
-  )
-}
+  );
+};
