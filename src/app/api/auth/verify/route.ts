@@ -3,7 +3,8 @@ import { prisma } from "../../../../../prisma/prisma-client";
 
 export async function GET(req: NextRequest) {
   try {
-    const code = req.nextUrl.searchParams.get("code");
+    const url = new URL(req.url);
+    const code = url.searchParams.get("code");
 
     if (!code) {
       return NextResponse.json(
@@ -37,9 +38,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.redirect(new URL("/verified", req.url));
+    return NextResponse.redirect(new URL("/?verified", req.url));
   } catch (error) {
     console.error("error", error);
-    console.log("[VERIFY_GET] Server error: ", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
