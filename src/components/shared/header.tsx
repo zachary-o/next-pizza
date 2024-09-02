@@ -1,5 +1,3 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -18,11 +16,11 @@ interface Props {
   className?: string;
 }
 
-export const Header: React.FC<Props> = ({
+export default async function Header({
   hasSearch = true,
   hasCart = true,
   className,
-}) => {
+}: Props) {
   const [openAuthModal, setOpenAuthModal] = useState(false);
   const searchParams = useSearchParams();
 
@@ -72,4 +70,4 @@ export const Header: React.FC<Props> = ({
       </Container>
     </header>
   );
-};
+}
