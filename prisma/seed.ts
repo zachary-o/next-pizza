@@ -161,27 +161,27 @@ async function up() {
     data: [
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/xep/xzh/zmc/cr4gcw0aselwvf628pbmj3j/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3101815496",
+          "https://i.ibb.co/gv9DMyk/8288c3920fe94fa82c1de10003e3cee743defc1aacb48effffea79f9dbc115ae.png",
       },
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/km2/9gf/jrn/sb7ls1yj9fe5bwvuwgym73e/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3074015640",
+          "https://i.ibb.co/6wpbG4F/72525e49add17f0e65271ddfc83114919580af69b1c46b4fcd7084879c37533a.png",
       },
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/quw/acz/zf5/zu37vankpngyccqvgzbohj1/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=1336215020",
+          "https://i.ibb.co/72QSX3d/819546d7cfd0cf39629ee1f95f4949211fc20f79e9e73306bb88be7c0f4aafd9.png",
       },
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/7oc/5nf/ipn/oznceu2ywv82tdlnpwriyrq/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=38903958",
+          "https://i.ibb.co/cxJMhbq/a35853f69e93dc6e9e655f83c270214d54a0d1e31e4e47393917dc45ebf8a3b1.png",
       },
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/q0t/flg/0ph/xt67uw7kgqe9bag7spwkkyw/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=2941222737",
+          "https://i.ibb.co/nwz1Ct1/bccbf1c4a06f1473e3bbfb64f2185896d02779b9c3522b8b9d1695511b13078e.png",
       },
       {
         previewImageUrl:
-          "https://cdn.inappstory.ru/story/lza/rsp/2gc/xrar8zdspl4saq4uajmso38/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=4207486284",
+          "https://i.ibb.co/jM5YzdR/cd0c686e9def6bf29efa319dda9f68f1b6c2b152bb3022ae9b38646d6e961ec9.png",
       },
     ],
   });
@@ -191,27 +191,27 @@ async function up() {
       {
         storyId: 1,
         sourceUrl:
-          "https://cdn.inappstory.ru/file/dd/yj/sx/oqx9feuljibke3mknab7ilb35t.webp?k=IgAAAAAAAAAE",
+          "https://i.ibb.co/84NtqJq/3dd2786cf9d59f0e17855c22ad5fb175ff0ef45c919b00554ad8345b1c2c3762.png",
       },
       {
         storyId: 1,
         sourceUrl:
-          "https://cdn.inappstory.ru/file/jv/sb/fh/io7c5zarojdm7eus0trn7czdet.webp?k=IgAAAAAAAAAE",
+          "https://i.ibb.co/TWsLxDJ/93c8e57c4c9b20849bb44497c97a19922149b33232d5b4317f21d75b3f1943f3.png",
       },
       {
-        storyId: 1,
+        storyId: 2,
         sourceUrl:
-          "https://cdn.inappstory.ru/file/ts/p9/vq/zktyxdxnjqbzufonxd8ffk44cb.webp?k=IgAAAAAAAAAE",
+          "https://i.ibb.co/mbYznSY/b4ecf2ae51ab73a67e97b86ee6f487a2771df7d874e3c2a00a06829c088f07a6.png",
       },
       {
-        storyId: 1,
+        storyId: 2,
         sourceUrl:
-          "https://cdn.inappstory.ru/file/ur/uq/le/9ufzwtpdjeekidqq04alfnxvu2.webp?k=IgAAAAAAAAAE",
+          "https://i.ibb.co/pzDtmVw/c76e268f89378076695d52a4393a406c21023e56c08ededf633ec7e004e64cc0.png",
       },
       {
-        storyId: 1,
+        storyId: 3,
         sourceUrl:
-          "https://cdn.inappstory.ru/file/sy/vl/c7/uyqzmdojadcbw7o0a35ojxlcul.webp?k=IgAAAAAAAAAE",
+          "https://i.ibb.co/Tqthkcd/cd256165116570e311c0ad9d546deeffa1ffc10def231364f33b0f0fad72ac5d.png",
       },
     ],
   });
