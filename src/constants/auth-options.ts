@@ -6,7 +6,6 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "../../prisma/prisma-client";
 
-// TODO: change homepage url on github before deploying
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({

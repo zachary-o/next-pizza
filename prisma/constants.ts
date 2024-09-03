@@ -119,7 +119,7 @@ export const _ingredients = [
       name: "Latte",
       imageUrl:
         "https://i.ibb.co/yWVwY4P/167fd19b67bf5c18031ab8e222f7b9e66fdcbcbb12b7d69cd13f0e8a80e42c15.png",
-      categoryId: 2,
+      categoryId: 5,
     },
     {
       name: "Sandwich with ham and cheese",

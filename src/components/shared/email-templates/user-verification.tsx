@@ -10,7 +10,7 @@ export const UserVerificationEmailTemplate: React.FC<Props> = ({ code }) => {
       <p>
         Verification code: <b>{code}</b>
       </p>
-      {/* TODO: CHANGE URL */}
+      
       <p>
         <a
           href={`https://next-pizza-snowy.vercel.app/api/auth/verify?code=${code}`}
