@@ -11,8 +11,6 @@ export async function POST(req: NextRequest) {
   
   const { paymentId } = await req.json()
 
-  console.log("api checkout callback paymentId", paymentId)
-
   try {
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentId)
 
@@ -33,7 +31,6 @@ export async function POST(req: NextRequest) {
     }
 
     const isSucceeded = paymentIntent.status === "requires_payment_method"
-    console.log('paymentIntent', paymentIntent)
 
     await prisma.order.update({
       where: {
@@ -56,6 +53,6 @@ export async function POST(req: NextRequest) {
     }
   } catch (error) {
     console.log("[Checkout Callback] Error: ", error)
-    return NextResponse.json({ error: "Server Errorsssssss" })
+    return NextResponse.json({ error: "Server Error" })
   }
 }

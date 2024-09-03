@@ -104,7 +104,7 @@ export async function createOrder(
       })
     );
 
-    await fetch("http://localhost:3000/api/checkout/callback", {
+    await fetch("https://next-pizza-snowy.vercel.app/api/checkout/callback", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

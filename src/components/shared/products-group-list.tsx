@@ -34,12 +34,17 @@ export const ProductsGroupList: React.FC<Props> = ({
       setActiveCategoryId(categoryId);
     }
   }, [intersection?.isIntersecting, categoryId, setActiveCategoryId]);
-  
+
   return (
     <div className={className} id={title} ref={intersectionRef}>
       <Title className="font-extrabold mb-5" size="lg" text={title} />
 
-      <div className={cn("grid grid-cols-3 gap-[50px]", listClassName)}>
+      <div
+        className={cn(
+          "grid gap-[50px] grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3",
+          listClassName
+        )}
+      >
         {items.map((product) => (
           <ProductCard
             key={product.id}
